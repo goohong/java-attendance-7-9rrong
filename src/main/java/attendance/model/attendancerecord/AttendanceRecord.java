@@ -10,9 +10,10 @@ import java.util.Locale;
 
 public class AttendanceRecord {
     private static final String ADDED_ATTENDANCE_ANNOUNCE_FORMAT = "%d월 %d일 %s %s %s";
+    private static final String MODIFIED_ATTENDANCE_ANNOUNCE_FORMAT = " -> %s %s 수정 완료!";
 
     private final String nickname;
-    private final LocalDateTime dateTime;
+    private LocalDateTime dateTime;
 
     public AttendanceRecord(String nickname, LocalDateTime dateTime) {
         this.nickname = nickname;
@@ -30,6 +31,10 @@ public class AttendanceRecord {
         return nickname.equals(value);
     }
 
+    public boolean isDayValue(int value) {
+        return dateTime.getDayOfMonth() == value;
+    }
+
     public String getAttendanceSummary() {
         return String.format(ADDED_ATTENDANCE_ANNOUNCE_FORMAT,
                 NOW.getMonthValue(),
@@ -39,5 +44,17 @@ public class AttendanceRecord {
                 EducationDateTime.getAppropriateEducationTime(dateTime)
                         .getAttendanceType(dateTime)
                         .getAttendanceSymbol());
+    }
+
+    public String getAttendanceSummaryAfterModify() {
+        return String.format(MODIFIED_ATTENDANCE_ANNOUNCE_FORMAT,
+                dateTime.format(HOUR_MINUTE_FORMATTER),
+                EducationDateTime.getAppropriateEducationTime(dateTime)
+                        .getAttendanceType(dateTime)
+                        .getAttendanceSymbol());
+    }
+
+    public void modifyRecord(LocalDateTime modificationTime) {
+        dateTime = modificationTime;
     }
 }

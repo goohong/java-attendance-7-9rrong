@@ -1,7 +1,6 @@
 package attendance.model.attendancerecord;
 
-import static attendance.controller.AttendanceController.NOW;
-
+import attendance.model.ErrorCode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,19 @@ public class AttendanceRecords {
         return attendanceRecords.stream().anyMatch(attendanceRecord -> attendanceRecord.isNickname(nickname));
     }
 
-    public void modifyAttendance(String nickname, int dayOfMonth, LocalDateTime modificationTime) {
+    public String modifyAttendance(String nickname, int dayOfMonth, LocalDateTime modificationTime) {
+        AttendanceRecord attendanceRecordToModify = findRecordByNicknameAndDayValue(nickname, dayOfMonth);
+        String summaryBeforeModify = attendanceRecordToModify.getAttendanceSummary();
+        attendanceRecordToModify.modifyRecord(modificationTime);
+        String summaryAfterModify = attendanceRecordToModify.getAttendanceSummaryAfterModify();
+        return summaryBeforeModify + summaryAfterModify;
+    }
 
+    private AttendanceRecord findRecordByNicknameAndDayValue(String nickname, int dayValue) {
+        return attendanceRecords.stream()
+                .filter(attendanceRecord -> attendanceRecord.isNickname(nickname))
+                .filter(attendanceRecord -> attendanceRecord.isDayValue(dayValue))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(ErrorCode.ATTENDANCE_NOT_FOUND.getMessage()));
     }
 }
