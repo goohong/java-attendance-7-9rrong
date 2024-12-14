@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class AttendancesCsvReader {
+    public static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
     private final String filePath;
 
     private int index;
@@ -35,7 +37,7 @@ public class AttendancesCsvReader {
         return new AttendanceRecordDTO(lineContents[0],
                 LocalDateTime.parse(
                         lineContents[1],
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+                        DATE_TIME_FORMAT
                 )
         );
     }
