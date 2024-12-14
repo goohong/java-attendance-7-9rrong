@@ -1,6 +1,7 @@
 package attendance;
 
 import attendance.controller.AttendanceController;
+import attendance.utils.AttendancesCsvReader;
 import attendance.view.InputView;
 import attendance.view.OutputView;
 
@@ -18,7 +19,8 @@ public class Application {
     private AttendanceController initializeComponents() {
         InputView inputView = new InputView();
         OutputView outputView = new OutputView();
+        AttendancesCsvReader attendancesCsvReader = new AttendancesCsvReader("attendances.csv");
 
-        return new AttendanceController(inputView, outputView);
+        return new AttendanceController(inputView, outputView, attendancesCsvReader);
     }
 }
