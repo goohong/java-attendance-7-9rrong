@@ -9,8 +9,8 @@ public enum ErrorCode {
     NICKNAME_NOT_FOUND("등록되지 않은 닉네임입니다."),
     ATTENDANCE_NOT_FOUND("수정할 기록을 찾을 수 없습니다."),
     DAY_NOT_CHECKING_ATTENDANCE(
-            DateTimes.now().withMinute(1).getMonthValue() + "월 " + DateTimes.now().withMinute(1).getDayOfMonth() + "일 "
-                    + DateTimes.now().withMinute(1).getDayOfWeek().getDisplayName(
+            DateTimes.now().withMinute(1).getMonthValue() + "월 " + DateTimes.now().withMinute(1).plusDays(1).getDayOfMonth() + "일 "
+                    + DateTimes.now().plusDays(1).withMinute(1).getDayOfWeek().getDisplayName(
                     TextStyle.FULL, Locale.KOREAN) + "은 등교일이 아닙니다."),
     FUTURE_NOT_MODIFIABLE("아직 수정할 수 없습니다."),
     TIME_NOT_OPERATION_TIME("캠퍼스 운영 시간에만 출석이 가능합니다."),
