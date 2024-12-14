@@ -42,8 +42,8 @@ public class AttendanceController {
 
             if (featureSelection == FeatureSelection.CHECK_ATTENDANCE) {
 
-                if (NOW.getDayOfWeek() == DayOfWeek.SATURDAY || NOW.getDayOfWeek() == DayOfWeek.SUNDAY
-                        || EXTRA_HOLIDAY.contains(NOW.getDayOfMonth())) {
+                if (DateTimes.now().getDayOfWeek() == DayOfWeek.SATURDAY || DateTimes.now().getDayOfWeek() == DayOfWeek.SUNDAY
+                        || EXTRA_HOLIDAY.contains(DateTimes.now().getDayOfMonth())) {
                     throw new IllegalArgumentException(ErrorCode.DAY_NOT_CHECKING_ATTENDANCE.getMessage());
                 }
 
