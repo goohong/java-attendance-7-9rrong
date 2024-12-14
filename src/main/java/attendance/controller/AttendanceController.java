@@ -40,8 +40,10 @@ public class AttendanceController {
 
             if (featureSelection == FeatureSelection.CHECK_ATTENDANCE) {
                 String nickname = inputView.readNickname();
+                if(!attendanceRecords.isExistingNickname(nickname)) {
+                    throw new IllegalArgumentException(ErrorCode.NICKNAME_NOT_FOUND.getMessage());
+                }
                 LocalDateTime attendanceTime = InputParser.fromHourMinute(inputView.readDate());
-
                 addAttendance(nickname, attendanceTime);
             }
 
@@ -99,10 +101,10 @@ public class AttendanceController {
     }
 
     private void addAttendance(String nickname, LocalDateTime attendanceTime) {
-        if (attendanceRecords.isExistingNickname(nickname)) {
+        if (attendanceRecords.isExistingNicknameToday(nickname)) {
             outputView.printError(ErrorCode.ATTENDANCE_ALREADY_ADDED.getMessage());
         }
-        if (!attendanceRecords.isExistingNickname(nickname)) {
+        if (!attendanceRecords.isExistingNicknameToday(nickname)) {
             outputView.printAddedAttendance(attendanceRecords.addAttendance(nickname, attendanceTime));
         }
     }

@@ -1,5 +1,7 @@
 package attendance.model.attendancerecord;
 
+import static attendance.controller.AttendanceController.NOW;
+
 import attendance.model.AttendanceSummaryDTO;
 import attendance.model.AttendanceType;
 import attendance.model.CrewState;
@@ -31,6 +33,12 @@ public class AttendanceRecords {
 
     public boolean isExistingNickname(String nickname) {
         return attendanceRecords.stream().anyMatch(attendanceRecord -> attendanceRecord.isNickname(nickname));
+    }
+
+    public boolean isExistingNicknameToday(String nickname) {
+        return attendanceRecords.stream()
+                .filter(attendanceRecord -> attendanceRecord.isDayValue(NOW.getDayOfMonth()))
+                .anyMatch(attendanceRecord -> attendanceRecord.isNickname(nickname));
     }
 
     public String modifyAttendance(String nickname, int dayOfMonth, LocalTime modificationTime) {

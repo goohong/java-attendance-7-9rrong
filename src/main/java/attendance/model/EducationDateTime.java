@@ -38,15 +38,15 @@ public enum EducationDateTime {
         return EXCEPT_MONDAY;
     }
 
-    private static void checkCampusOperationTime() {
-        if (NOW.toLocalTime().isAfter(CAMPUS_CLOSE_TIME) || NOW.toLocalTime().isBefore(CAMPUS_OPEN_TIME)) {
+    private static void checkCampusOperationTime(LocalDateTime attendanceTime) {
+        if (attendanceTime.toLocalTime().isAfter(CAMPUS_CLOSE_TIME) || attendanceTime.toLocalTime().isBefore(CAMPUS_OPEN_TIME)) {
             throw new IllegalArgumentException(ErrorCode.TIME_NOT_OPERATION_TIME.getMessage());
         }
     }
 
     public AttendanceType getNowAttendanceType(LocalDateTime attendanceTime) {
 
-        checkCampusOperationTime();
+        checkCampusOperationTime(attendanceTime);
 
         if (attendanceTime.isAfter(endTime)) {
             return AttendanceType.ABSENT;
@@ -58,7 +58,7 @@ public enum EducationDateTime {
 
     public AttendanceType getAtendanceType(LocalDateTime attendanceTime) {
 
-        checkCampusOperationTime();
+        checkCampusOperationTime(attendanceTime);
 
         if (attendanceTime.toLocalTime().isAfter(endTime.toLocalTime())) {
             return AttendanceType.ABSENT;
