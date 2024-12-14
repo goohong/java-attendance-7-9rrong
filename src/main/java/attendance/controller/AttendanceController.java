@@ -1,5 +1,6 @@
 package attendance.controller;
 
+import static attendance.model.EducationDateTime.EXTRA_HOLIDAY;
 import static attendance.utils.InputParser.HOUR_MINUTE_FORMATTER;
 
 import attendance.model.ErrorCode;
@@ -10,6 +11,7 @@ import attendance.utils.InputParser;
 import attendance.view.InputView;
 import attendance.view.OutputView;
 import camp.nextstep.edu.missionutils.DateTimes;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -39,8 +41,14 @@ public class AttendanceController {
             FeatureSelection featureSelection = InputParser.parseFeatureSelection(inputView.readSelection());
 
             if (featureSelection == FeatureSelection.CHECK_ATTENDANCE) {
+
+                if (NOW.getDayOfWeek() == DayOfWeek.SATURDAY || NOW.getDayOfWeek() == DayOfWeek.SUNDAY
+                        || EXTRA_HOLIDAY.contains(NOW.getDayOfMonth())) {
+                    throw new IllegalArgumentException(ErrorCode.DAY_NOT_CHECKING_ATTENDANCE.getMessage());
+                }
+
                 String nickname = inputView.readNickname();
-                if(!attendanceRecords.isExistingNickname(nickname)) {
+                if (!attendanceRecords.isExistingNickname(nickname)) {
                     throw new IllegalArgumentException(ErrorCode.NICKNAME_NOT_FOUND.getMessage());
                 }
                 LocalDateTime attendanceTime = InputParser.fromHourMinute(inputView.readDate());

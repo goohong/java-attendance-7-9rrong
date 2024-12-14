@@ -14,7 +14,8 @@ public enum EducationDateTime {
     EXCEPT_MONDAY(LocalTime.parse("10:00", HOUR_MINUTE_FORMATTER),
             LocalTime.parse("18:00", HOUR_MINUTE_FORMATTER));
 
-    private static final List<Integer> EXTRA_HOLIDAY = List.of(25);
+    public static final List<Integer> EXTRA_HOLIDAY = List.of(25);
+
     private static final LocalTime CAMPUS_OPEN_TIME = LocalTime.parse("08:00", HOUR_MINUTE_FORMATTER);
     private static final LocalTime CAMPUS_CLOSE_TIME = LocalTime.parse("23:00", HOUR_MINUTE_FORMATTER);
 
@@ -30,16 +31,21 @@ public enum EducationDateTime {
         if (attendanceTime.getDayOfWeek() == DayOfWeek.MONDAY) {
             return MONDAY;
         }
-
-        if (attendanceTime.getDayOfWeek() == DayOfWeek.SATURDAY || attendanceTime.getDayOfWeek() == DayOfWeek.SUNDAY
-                || EXTRA_HOLIDAY.contains(attendanceTime.getDayOfMonth())) {
-            throw new IllegalArgumentException(ErrorCode.DAY_NOT_CHECKING_ATTENDANCE.getMessage());
-        }
+        checkIsAttendingDay(attendanceTime);
         return EXCEPT_MONDAY;
     }
 
+    public static void checkIsAttendingDay(LocalDateTime attendanceTime) {
+        if (attendanceTime.withMinute(1).getDayOfWeek() == DayOfWeek.SATURDAY
+                || attendanceTime.getDayOfWeek() == DayOfWeek.SUNDAY
+                || EXTRA_HOLIDAY.contains(attendanceTime.getDayOfMonth())) {
+            throw new IllegalArgumentException(ErrorCode.DAY_NOT_CHECKING_ATTENDANCE.getMessage());
+        }
+    }
+
     private static void checkCampusOperationTime(LocalDateTime attendanceTime) {
-        if (attendanceTime.toLocalTime().isAfter(CAMPUS_CLOSE_TIME) || attendanceTime.toLocalTime().isBefore(CAMPUS_OPEN_TIME)) {
+        if (attendanceTime.toLocalTime().isAfter(CAMPUS_CLOSE_TIME) || attendanceTime.toLocalTime()
+                .isBefore(CAMPUS_OPEN_TIME)) {
             throw new IllegalArgumentException(ErrorCode.TIME_NOT_OPERATION_TIME.getMessage());
         }
     }
