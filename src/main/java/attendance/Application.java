@@ -1,6 +1,7 @@
 package attendance;
 
 import attendance.controller.AttendanceController;
+import attendance.model.attendancerecord.AttendanceRecords;
 import attendance.utils.AttendancesCsvReader;
 import attendance.view.InputView;
 import attendance.view.OutputView;
@@ -20,7 +21,8 @@ public class Application {
         InputView inputView = new InputView();
         OutputView outputView = new OutputView();
         AttendancesCsvReader attendancesCsvReader = new AttendancesCsvReader("attendances.csv");
+        AttendanceRecords attendanceRecords = AttendanceRecords.from(attendancesCsvReader.loadCsvFileToDTO());
 
-        return new AttendanceController(inputView, outputView, attendancesCsvReader);
+        return new AttendanceController(inputView, outputView, attendancesCsvReader, attendanceRecords);
     }
 }

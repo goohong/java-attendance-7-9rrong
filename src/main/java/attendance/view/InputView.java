@@ -2,9 +2,7 @@ package attendance.view;
 
 import static attendance.controller.AttendanceController.NOW;
 
-import attendance.controller.AttendanceController;
 import camp.nextstep.edu.missionutils.Console;
-import java.time.LocalDateTime;
 
 public class InputView {
 
@@ -17,7 +15,10 @@ public class InputView {
             Q. 종료""";
 
     private static final String NICKNAME_PROMPT = "닉네임을 입력해 주세요.";
+    private static final String NICKNAME_MODIFICATION_PROMPT = "출석을 수정하려는 크루의 닉네임을 입력해 주세요.";
     private static final String DATETIME_PROMPT = "등교 시간을 입력해 주세요.";
+    private static final String DAY_OF_MONTH_MODIFICATION_PROMPT = "수정하려는 날짜(일)를 입력해 주세요.";
+
 
     public String readSelection() {
         System.out.println(String.format(FEATURE_SELECTION_PROMPT_FORMAT, NOW.getMonthValue(), NOW.getDayOfMonth()));
@@ -37,4 +38,15 @@ public class InputView {
         return Console.readLine();
     }
 
+    public String readNicknameForModification() {
+        System.out.println(NICKNAME_PROMPT);
+
+        return Console.readLine();
+    }
+
+    public String readDayOfMonth() {
+        System.out.println(DAY_OF_MONTH_MODIFICATION_PROMPT);
+
+        return Console.readLine();
+    }
 }

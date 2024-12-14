@@ -1,4 +1,4 @@
-package attendance.model;
+package attendance.model.attendancerecord;
 
 import java.time.LocalDateTime;
 
