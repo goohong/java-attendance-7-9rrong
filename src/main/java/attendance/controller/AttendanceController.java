@@ -56,8 +56,8 @@ public class AttendanceController {
             outputView.printError(ErrorCode.NICKNAME_NOT_FOUND.getMessage());
         }
         if (attendanceRecords.isExistingNickname(nickname)) {
-            attendanceRecords.modifyAttendance(nickname, dayOfMonth, modificationTime);
-//        outputView.printModifiedAttendance()
+            outputView.printModifiedAttendance(
+                    attendanceRecords.modifyAttendance(nickname, dayOfMonth, modificationTime));
         }
     }
 

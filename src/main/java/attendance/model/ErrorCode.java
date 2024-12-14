@@ -8,6 +8,7 @@ import java.util.Locale;
 public enum ErrorCode {
     INVALID_INPUT("잘못된 형식을 입력하였습니다."),
     NICKNAME_NOT_FOUND("등록되지 않은 닉네임입니다."),
+    ATTENDANCE_NOT_FOUND("수정할 기록을 찾을 수 없습니다."),
     DAY_NOT_CHECKING_ATTENDANCE(
             NOW.getMonthValue() + "월" + NOW.getDayOfMonth() + "일" + NOW.getDayOfWeek().getDisplayName(
                     TextStyle.FULL, Locale.KOREAN) + "은 등교일이 아닙니다."),
