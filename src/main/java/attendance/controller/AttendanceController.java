@@ -52,6 +52,26 @@ public class AttendanceController {
             modifyAttendance(nickname, dayOfMonth, modificationTime);
 
         }
+
+        if (featureSelection == FeatureSelection.GET_CREW_ATTENDANCE) {
+            String nickname = inputView.readNickname();
+
+            printAllAttendances(nickname);
+        }
+    }
+
+    private void printAllAttendances(String nickname) {
+        if (!attendanceRecords.isExistingNickname(nickname)) {
+            outputView.printError(ErrorCode.NICKNAME_NOT_FOUND.getMessage());
+        }
+        if (attendanceRecords.isExistingNickname(nickname)) {
+
+            outputView.printAttendances(
+                    nickname,
+                    attendanceRecords.getAttendance(nickname),
+                    attendanceRecords.getAttendanceSummaryDTO(nickname)
+            );
+        }
     }
 
     private void modifyAttendance(String nickname, int dayOfMonth, LocalTime modificationTime) {

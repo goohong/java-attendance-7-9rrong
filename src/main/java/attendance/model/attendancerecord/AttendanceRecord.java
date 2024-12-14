@@ -3,6 +3,7 @@ package attendance.model.attendancerecord;
 import static attendance.controller.AttendanceController.NOW;
 import static attendance.utils.InputParser.HOUR_MINUTE_FORMATTER;
 
+import attendance.model.AttendanceType;
 import attendance.model.EducationDateTime;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -45,6 +46,10 @@ public class AttendanceRecord {
                 EducationDateTime.getAppropriateEducationTime(dateTime)
                         .getAttendanceType(dateTime)
                         .getAttendanceSymbol());
+    }
+
+    public AttendanceType getAttendanceType() {
+        return EducationDateTime.getAppropriateEducationTime(dateTime).getAttendanceType(dateTime);
     }
 
     public String getAttendanceSummaryAfterModify() {
