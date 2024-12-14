@@ -7,7 +7,7 @@ public enum FeatureSelection {
     CHECK_ATTENDANCE("1"),
     MODIFY_ATTENDANCE("2"),
     GET_CREW_ATTENDANCE("3"),
-    GET_CREW_WITH_EXPULSION_RISK("4"),
+    GET_CREW_WITH_RISK_STATE("4"),
     QUIT("Q");
 
     private final String inputSymbol;

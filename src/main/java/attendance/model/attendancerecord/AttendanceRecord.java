@@ -11,7 +11,7 @@ import java.time.format.TextStyle;
 import java.util.Locale;
 
 public class AttendanceRecord {
-    private static final String ADDED_ATTENDANCE_ANNOUNCE_FORMAT = "%d월 %d일 %s %s %s";
+    private static final String ATTENDANCE_ANNOUNCE_FORMAT = "%d월 %d일 %s %s %s";
     private static final String MODIFIED_ATTENDANCE_ANNOUNCE_FORMAT = " -> %s %s 수정 완료!";
 
     private final String nickname;
@@ -29,6 +29,14 @@ public class AttendanceRecord {
         );
     }
 
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
     public boolean isNickname(String value) {
         return nickname.equals(value);
     }
@@ -37,26 +45,37 @@ public class AttendanceRecord {
         return dateTime.getDayOfMonth() == value;
     }
 
-    public String getAttendanceSummary() {
-        return String.format(ADDED_ATTENDANCE_ANNOUNCE_FORMAT,
+    public String getNowAttendanceSummary() {
+        return String.format(ATTENDANCE_ANNOUNCE_FORMAT,
                 NOW.getMonthValue(),
                 NOW.getDayOfMonth(),
                 NOW.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN),
                 dateTime.format(HOUR_MINUTE_FORMATTER),
                 EducationDateTime.getAppropriateEducationTime(dateTime)
-                        .getAttendanceType(dateTime)
+                        .getNowAttendanceType(dateTime)
+                        .getAttendanceSymbol());
+    }
+
+    public String getAttendanceSummary() {
+        return String.format(ATTENDANCE_ANNOUNCE_FORMAT,
+                dateTime.getMonthValue(),
+                dateTime.getDayOfMonth(),
+                dateTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.KOREAN),
+                dateTime.format(HOUR_MINUTE_FORMATTER),
+                EducationDateTime.getAppropriateEducationTime(dateTime)
+                        .getNowAttendanceType(dateTime)
                         .getAttendanceSymbol());
     }
 
     public AttendanceType getAttendanceType() {
-        return EducationDateTime.getAppropriateEducationTime(dateTime).getAttendanceType(dateTime);
+        return EducationDateTime.getAppropriateEducationTime(dateTime).getNowAttendanceType(dateTime);
     }
 
     public String getAttendanceSummaryAfterModify() {
         return String.format(MODIFIED_ATTENDANCE_ANNOUNCE_FORMAT,
                 dateTime.format(HOUR_MINUTE_FORMATTER),
                 EducationDateTime.getAppropriateEducationTime(dateTime)
-                        .getAttendanceType(dateTime)
+                        .getNowAttendanceType(dateTime)
                         .getAttendanceSymbol());
     }
 

@@ -44,15 +44,28 @@ public enum EducationDateTime {
         }
     }
 
-    public AttendanceType getAttendanceType(LocalDateTime attendanceTime) {
+    public AttendanceType getNowAttendanceType(LocalDateTime attendanceTime) {
 
         checkCampusOperationTime();
 
-        if (attendanceTime.isAfter(endTime) || attendanceTime.isBefore(startTime)) {
+        if (attendanceTime.isAfter(endTime)) {
             return AttendanceType.ABSENT;
         }
 
         int delayedMinute = (int) Duration.between(startTime, attendanceTime).toMinutes();
+        return AttendanceType.fromLateMinutes(delayedMinute);
+    }
+
+    public AttendanceType getAtendanceType(LocalDateTime attendanceTime) {
+
+        checkCampusOperationTime();
+
+        if (attendanceTime.toLocalTime().isAfter(endTime.toLocalTime())) {
+            return AttendanceType.ABSENT;
+        }
+
+        int delayedMinute = (int) Duration.between(getAppropriateEducationTime(attendanceTime).startTime.toLocalTime(),
+                attendanceTime.toLocalTime()).toMinutes();
         return AttendanceType.fromLateMinutes(delayedMinute);
     }
 }

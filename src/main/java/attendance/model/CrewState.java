@@ -35,4 +35,8 @@ public enum CrewState {
     public String getName() {
         return name;
     }
+
+    public boolean isInRisk() {
+        return this != NONE;
+    }
 }

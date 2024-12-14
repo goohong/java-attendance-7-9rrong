@@ -35,29 +35,43 @@ public class AttendanceController {
     }
 
     private void startMenu() {
-        FeatureSelection featureSelection = InputParser.parseFeatureSelection(inputView.readSelection());
+        while (true) {
+            FeatureSelection featureSelection = InputParser.parseFeatureSelection(inputView.readSelection());
 
-        if (featureSelection == FeatureSelection.CHECK_ATTENDANCE) {
-            String nickname = inputView.readNickname();
-            LocalDateTime attendanceTime = InputParser.fromHourMinute(inputView.readDate());
+            if (featureSelection == FeatureSelection.CHECK_ATTENDANCE) {
+                String nickname = inputView.readNickname();
+                LocalDateTime attendanceTime = InputParser.fromHourMinute(inputView.readDate());
 
-            addAttendance(nickname, attendanceTime);
+                addAttendance(nickname, attendanceTime);
+            }
+
+            if (featureSelection == FeatureSelection.MODIFY_ATTENDANCE) {
+                String nickname = inputView.readNicknameForModification();
+                int dayOfMonth = InputParser.toInt(inputView.readDayOfMonth());
+                LocalTime modificationTime = LocalTime.parse(inputView.readDate(), HOUR_MINUTE_FORMATTER);
+
+                modifyAttendance(nickname, dayOfMonth, modificationTime);
+
+            }
+
+            if (featureSelection == FeatureSelection.GET_CREW_ATTENDANCE) {
+                String nickname = inputView.readNickname();
+
+                printAllAttendances(nickname);
+            }
+
+            if (featureSelection == FeatureSelection.GET_CREW_WITH_RISK_STATE) {
+                printAllCrewsWithRiskState();
+            }
+
+            if (featureSelection == FeatureSelection.QUIT) {
+                break;
+            }
         }
+    }
 
-        if (featureSelection == FeatureSelection.MODIFY_ATTENDANCE) {
-            String nickname = inputView.readNicknameForModification();
-            int dayOfMonth = InputParser.toInt(inputView.readDayOfMonth());
-            LocalTime modificationTime = LocalTime.parse(inputView.readDate(), HOUR_MINUTE_FORMATTER);
-
-            modifyAttendance(nickname, dayOfMonth, modificationTime);
-
-        }
-
-        if (featureSelection == FeatureSelection.GET_CREW_ATTENDANCE) {
-            String nickname = inputView.readNickname();
-
-            printAllAttendances(nickname);
-        }
+    private void printAllCrewsWithRiskState() {
+        attendanceRecords.getAllCrewsWithRiskState();
     }
 
     private void printAllAttendances(String nickname) {
