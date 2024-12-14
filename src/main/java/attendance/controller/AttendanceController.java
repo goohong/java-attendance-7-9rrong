@@ -27,6 +27,10 @@ public class AttendanceController {
     public void run() {
         AttendanceRecords attendanceRecords = AttendanceRecords.from(attendancesCsvReader.loadCsvFileToDTO());
 
+        startMenu(attendanceRecords);
+    }
+
+    private void startMenu(AttendanceRecords attendanceRecords) {
         FeatureSelection featureSelection = InputParser.parseFeatureSelection(inputView.readSelection());
 
         if (featureSelection == FeatureSelection.CHECK_ATTENDANCE) {
@@ -35,7 +39,6 @@ public class AttendanceController {
 
             addAttendance(attendanceRecords, nickname, attendanceTime);
         }
-
     }
 
     private void addAttendance(AttendanceRecords attendanceRecords, String nickname, LocalDateTime attendanceTime) {
@@ -43,5 +46,6 @@ public class AttendanceController {
             outputView.printError(ErrorCode.ATTENDANCE_ALREADY_ADDED.getMessage());
         }
         attendanceRecords.addAttendance(nickname, attendanceTime);
+        outputView.printAddedAttendance(attendanceTime);
     }
 }
