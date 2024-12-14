@@ -28,7 +28,12 @@ public enum EducationDateTime {
         if (attendanceTime.getDayOfWeek() == DayOfWeek.MONDAY) {
             return MONDAY;
         }
-        return EXCEPT_MONDAY;
+
+        if (attendanceTime.getDayOfWeek() == DayOfWeek.SATURDAY || attendanceTime.getDayOfWeek() == DayOfWeek.SUNDAY
+                || EXTRA_HOLIDAY.contains(attendanceTime.getDayOfMonth())) {
+            throw new IllegalArgumentException(ErrorCode.DAY_NOT_CHECKING_ATTENDANCE.getMessage());
+        }
+            return EXCEPT_MONDAY;
     }
 
     public AttendanceType getAttendanceType(LocalDateTime attendanceTime) {
