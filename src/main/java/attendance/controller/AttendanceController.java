@@ -1,5 +1,7 @@
 package attendance.controller;
 
+import static attendance.utils.InputParser.HOUR_MINUTE_FORMATTER;
+
 import attendance.model.ErrorCode;
 import attendance.model.FeatureSelection;
 import attendance.model.attendancerecord.AttendanceRecords;
@@ -9,6 +11,7 @@ import attendance.view.InputView;
 import attendance.view.OutputView;
 import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class AttendanceController {
 
@@ -44,14 +47,14 @@ public class AttendanceController {
         if (featureSelection == FeatureSelection.MODIFY_ATTENDANCE) {
             String nickname = inputView.readNicknameForModification();
             int dayOfMonth = InputParser.toInt(inputView.readDayOfMonth());
-            LocalDateTime modificationTime = InputParser.fromDateTime(inputView.readDate());
+            LocalTime modificationTime = LocalTime.parse(inputView.readDate(), HOUR_MINUTE_FORMATTER);
 
             modifyAttendance(nickname, dayOfMonth, modificationTime);
 
         }
     }
 
-    private void modifyAttendance(String nickname, int dayOfMonth, LocalDateTime modificationTime) {
+    private void modifyAttendance(String nickname, int dayOfMonth, LocalTime modificationTime) {
         if (!attendanceRecords.isExistingNickname(nickname)) {
             outputView.printError(ErrorCode.NICKNAME_NOT_FOUND.getMessage());
         }

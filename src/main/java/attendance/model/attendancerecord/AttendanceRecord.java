@@ -5,6 +5,7 @@ import static attendance.utils.InputParser.HOUR_MINUTE_FORMATTER;
 
 import attendance.model.EducationDateTime;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
@@ -54,7 +55,7 @@ public class AttendanceRecord {
                         .getAttendanceSymbol());
     }
 
-    public void modifyRecord(LocalDateTime modificationTime) {
-        dateTime = modificationTime;
+    public void modifyRecord(LocalTime modificationTime) {
+        dateTime = dateTime.withHour(modificationTime.getHour()).withMinute(modificationTime.getMinute());
     }
 }

@@ -15,6 +15,8 @@ public enum EducationDateTime {
             LocalTime.parse("18:00", HOUR_MINUTE_FORMATTER));
 
     private static final List<Integer> EXTRA_HOLIDAY = List.of(25);
+    private static final LocalTime CAMPUS_OPEN_TIME = LocalTime.parse("08:00", HOUR_MINUTE_FORMATTER);
+    private static final LocalTime CAMPUS_CLOSE_TIME = LocalTime.parse("23:00", HOUR_MINUTE_FORMATTER);
 
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
@@ -33,13 +35,21 @@ public enum EducationDateTime {
                 || EXTRA_HOLIDAY.contains(attendanceTime.getDayOfMonth())) {
             throw new IllegalArgumentException(ErrorCode.DAY_NOT_CHECKING_ATTENDANCE.getMessage());
         }
-            return EXCEPT_MONDAY;
+        return EXCEPT_MONDAY;
+    }
+
+    private static void checkCampusOperationTime() {
+        if (NOW.toLocalTime().isAfter(CAMPUS_CLOSE_TIME) || NOW.toLocalTime().isBefore(CAMPUS_OPEN_TIME)) {
+            throw new IllegalArgumentException(ErrorCode.TIME_NOT_OPERATION_TIME.getMessage());
+        }
     }
 
     public AttendanceType getAttendanceType(LocalDateTime attendanceTime) {
 
+        checkCampusOperationTime();
+
         if (attendanceTime.isAfter(endTime) || attendanceTime.isBefore(startTime)) {
-            throw new IllegalArgumentException(ErrorCode.TIME_NOT_OPERATION_TIME.getMessage());
+            return AttendanceType.ABSENT;
         }
 
         int delayedMinute = (int) Duration.between(startTime, attendanceTime).toMinutes();

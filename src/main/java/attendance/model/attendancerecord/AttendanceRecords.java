@@ -2,6 +2,7 @@ package attendance.model.attendancerecord;
 
 import attendance.model.ErrorCode;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +27,13 @@ public class AttendanceRecords {
         return attendanceRecords.stream().anyMatch(attendanceRecord -> attendanceRecord.isNickname(nickname));
     }
 
-    public String modifyAttendance(String nickname, int dayOfMonth, LocalDateTime modificationTime) {
+    public String modifyAttendance(String nickname, int dayOfMonth, LocalTime modificationTime) {
         AttendanceRecord attendanceRecordToModify = findRecordByNicknameAndDayValue(nickname, dayOfMonth);
         String summaryBeforeModify = attendanceRecordToModify.getAttendanceSummary();
+
         attendanceRecordToModify.modifyRecord(modificationTime);
         String summaryAfterModify = attendanceRecordToModify.getAttendanceSummaryAfterModify();
+
         return summaryBeforeModify + summaryAfterModify;
     }
 
